@@ -16,7 +16,7 @@ const getCaptcha = async () => {
 
 	// 生成验证码的同时，保存验证码到数据库
 	const ls = new loginService()
-	const result = await ls.saveImageCode({ code_id: insertid, code_num: captcha.data, create_time: formatDate(new Date()) })
+	const result = await ls.saveImageCode([captcha.text, formatDate(new Date())])
 	if (result) {
 		return { text: captcha.text, code_id: result.insertid }
 	} else {
