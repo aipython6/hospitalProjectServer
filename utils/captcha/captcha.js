@@ -5,23 +5,23 @@ const { formatDate } = require('../dateHandle/dateHandle')
 
 const getCaptcha = async () => {
   const captcha = svgCaptcha.create({
-		size: 4,
-		ignoreChars: '0Oo1liI',
-		noise: 2,
-		background: '#f0f0f4',
-		width: 110,
-		height: 38,
-		fontSize: 38
-	})
+    size: 4,
+    ignoreChars: '0Oo1liI',
+    noise: 2,
+    background: '#f0f0f4',
+    width: 110,
+    height: 38,
+    fontSize: 38
+  })
 
-	// 生成验证码的同时，保存验证码到数据库
-	const ls = new loginService()
-	const result = await ls.saveImageCode([captcha.text, formatDate(new Date())])
-	if (result) {
-		return { text: captcha.text, code_id: result.insertid }
-	} else {
-		return { text: '', code_id: '' }
-	}
+  // 生成验证码的同时，保存验证码到数据库
+  const ls = new loginService()
+  const result = await ls.saveImageCode({ code_num: captcha.text, create_time: formatDate(new Date()) })
+  if (result.affectedRows) {
+    return { text: captcha.text, img: captcha.data, code_id: result.insertId }
+  } else {
+    return { text: '', code_id: '' }
+  }
 }
 
-module.exports = { getCaptcha: getCaptcha() }
+module.exports = { getCaptcha: getCaptcha }

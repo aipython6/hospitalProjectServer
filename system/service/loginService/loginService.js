@@ -6,11 +6,15 @@ class loginService {
   }
 
   saveImageCode(data) {
-    this.loginImpl.saveImageCode(data)
+    return this.loginImpl.saveImageCode(data)
   }
 
-  getImageCode(data) {
-    this.loginImpl.getImageCodeById(data)
+  getImageCodeById(data) {
+    return this.loginImpl.getImageCodeById(data)
+  }
+
+  getPasswordByUserid(data) {
+    return this.loginImpl.getPasswordByUserid(data)
   }
 }
 
