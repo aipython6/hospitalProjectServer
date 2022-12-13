@@ -4,15 +4,23 @@ const router = express.Router();
 const { formatDate } = require('../../utils/dateHandle/dateHandle')
 const accountService = require('../../system/service/accountService/accountService')
 const bu = require('../../utils/bcrypt/bcrypt')
+const { URL } = require('../../utils/constant/constant')
 // 根据user_code获取用户信息
 router.get('/get', async (req, res) => {
-
+  const { user_code } = req.query
+  const as = new accountService()
+  const result = await as.getInfoByUserCode({user_code: user_code})
+  const data = {
+    user_id: result.user_id,user_code: result.user_code,user_name: result.user_name,
+    level: result.level,gender: result.gender,age: result.age,dept_id: result.dept_id,
+    phone: result.phone, status: res.status, comment: result.comment
+  }
+  res.json({ code: 200, data: data })
 })
 
 // 添加用户
 router.post('/add', async (req, res) => {
   const { user_code, user_name, password, level, gender, age, dept_id, phone, avatar, status, comment } = req.body
-  console.log(typeof req.body.password)
   const as = new accountService()
   const data = {
     user_code: user_code,
@@ -23,7 +31,7 @@ router.post('/add', async (req, res) => {
     age: parseInt(age),
     dept_id: parseInt(dept_id),
     phone: phone,
-    avatar: avatar ?? 'http://localhost:3000/avatar/images/default.jfif',
+    avatar: avatar ?? URL.defaultAvatarUrl,
     status: parseInt(status),
     create_time: formatDate(new Date()),
     update_time: formatDate(new Date()),

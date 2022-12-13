@@ -4,8 +4,13 @@ class accountService {
   constructor() {
     this.accountImpl = new accountImpl()
   }
-  getInfo(data) {
-    return this.accountImpl.getInfo(data)
+
+  getUsers() {
+    return this.accountImpl.getUsers()
+  }
+
+  getInfoByUserCode(data) {
+    return this.accountImpl.getInfoByUserCode(data)
   }
 
   addUser(data) {

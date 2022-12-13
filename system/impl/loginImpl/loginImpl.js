@@ -14,32 +14,39 @@ class loginImpl {
           reject(err)
         }
       })
-    }).catch((err) => { reject(err) });
+    })
   }
 
   // 根据id获取验证码
   async getImageCodeById({ id }) {
     // 验证码有效期为5分钟
     const sql = `select code_num from codes where code_id = ${id} and create_time>=DATE_SUB(NOW(),INTERVAL 5 MINUTE)`
+    let code = undefined
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, res) => {
         if (!err) {
-          const code = res[0].code_num
+          if (res.length>0) {
+            code = res[0].code_num
+          }
           resolve({ code: code })
         } else {
           reject(err)
         }
       })
-    }).catch((err) => { reject(err) });
+    })
   }
 
   // 根据user_id获取密码
-  async getPasswordByUserid({ user_id }) {
-    const sql = `select password from users where user_id = '${user_id}'`
+  async getPasswordByUserid({ user_code }) {
+    const sql = `select password from users where user_code = '${user_code}'`
+    const password = undefined
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, res) => {
         if (!err) {
-          resolve({ hash_password: res[0].password })
+          if (res.length>0) {
+            password = res[0].password
+          }
+          resolve({ hash_password: password })
         } else {
           reject(err)
         }

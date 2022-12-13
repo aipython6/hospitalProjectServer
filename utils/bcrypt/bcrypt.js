@@ -3,15 +3,15 @@ const bcrypt = require('bcryptjs')
 class BcryptUtil {
   constructor() {
     this.saltRounds = 10
-    this.plaintextPass = 'hospitalApp'
+    this.plainText = 'hospitalApp'
   }
   // 密码加密
   passEncoder(pass) {
     return new Promise((resolve, reject) => {
-      bcrypt.getSalt(this.saltRounds, this.plaintextPass, (err, salt) => {
+      bcrypt.genSalt(this.saltRounds, this.plainText, (err, salt) => {
         bcrypt.hash(pass, salt, (err, hash) => {
           if (!err) {
-            return resolve(hash)
+            resolve(hash)
           } else {
             reject(err)
           }
@@ -25,7 +25,7 @@ class BcryptUtil {
     return new Promise((resolve, reject) => {
       bcrypt.compare(pass, hash, (err, result) => {
         if (!err) {
-          return resolve(result)
+          resolve(result)
         } else {
           reject(err)
         }

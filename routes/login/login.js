@@ -15,21 +15,24 @@ router.post('/userLogin', async (req, res, next) => {
   // user_code是唯一的,相当于职工号
   const { user_code, img_code, password, id } = req.body
   const ls = new loginService()
-  const { code } = await ls.getImageCodeById({ id: id })
-  const { hash_password } = await ls.getPasswordByUserid({ user_id: user_code })
-  const temp_password = await bu.passDecoder(hash_password, password)
-  if (code === img_code) {
-    if (temp_password) {
-      if (temp_password === password) {
-        res.json({ code: 200, message: '登录成功' })
+  const { code } = await ls.getImageCodeById({ id: parseInt(id) })
+  const { hash_password } = await ls.getPasswordByUserid({ user_code: user_code })
+  if (!code) {
+    res.json({ code: 200, message: '验证码已过期' })
+  } else {
+    if (code.toLowerCase() === img_code.toLowerCase()) {
+      if (hash_password) {
+        if (await bu.passDecoder(hash_password, password)) {
+          res.json({ code: 200, message: '登录成功' })
+        } else {
+          res.json({ code: 200, message: '密码错误' })
+        }
       } else {
-        res.json({ code: 200, message: '密码错误' })
+        res.json({ code: 200, message: '该用户不存在' })
       }
     } else {
-      res.json({ code: 200, message: '该用户不存在' })
+      res.json({ code: 200, message: '验证码错误,请重新输入' })
     }
-  } else {
-    res.json({ code: 200, message: '验证码错误或验证码过期,请重新输入' })
   }
 })
 
