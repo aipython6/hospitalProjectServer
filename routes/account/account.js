@@ -5,14 +5,19 @@ const { formatDate } = require('../../utils/dateHandle/dateHandle')
 const accountService = require('../../system/service/accountService/accountService')
 const bu = require('../../utils/bcrypt/bcrypt')
 const { URL } = require('../../utils/constant/constant')
+
+router.get('/all', async (req, res) => {
+
+})
+
 // 根据user_code获取用户信息
 router.get('/get', async (req, res) => {
   const { user_code } = req.query
   const as = new accountService()
-  const result = await as.getInfoByUserCode({user_code: user_code})
+  const result = await as.getInfoByUserCode({ user_code: user_code })
   const data = {
-    user_id: result.user_id,user_code: result.user_code,user_name: result.user_name,
-    level: result.level,gender: result.gender,age: result.age,dept_id: result.dept_id,
+    user_id: result.user_id, user_code: result.user_code, user_name: result.user_name,
+    level: result.level, gender: result.gender, age: result.age, avatar: result.avatar, dept_id: result.dept_id,
     phone: result.phone, status: res.status, comment: result.comment
   }
   res.json({ code: 200, data: data })

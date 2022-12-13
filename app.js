@@ -4,6 +4,10 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const cors = require('cors');
+const cors_instance = require('./utils/cors/cors')
+const token = require('./utils/token/token')
+
 const loginRouter = require('./routes/login/login');
 const accountRouter = require('./routes/account/account');
 
@@ -13,14 +17,34 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(cors(cors_instance.getCorsOptions()))
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/login', loginRouter);
-app.use('/account', accountRouter);
+app.use(async (req, res, next) => {
+  const url = req.url;
+  // 不需要token验证的请求
+  const whiteList = ['/api/login/userLogin', '/api/login/getImageCode']
+  if (whiteList.includes(url)) {
+    return next();
+  } else {
+    const t = req.headers.authorization
+    const user_code = req.query
+    if (!(await token.verify(t, user_code))) {
+      res.json({ code: 200, message: 'token验证失败' })
+    } else {
+      return next();
+    }
+  }
+})
+
+
+app.use('/api/login', loginRouter);
+app.use('/api/account', accountRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
