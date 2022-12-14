@@ -18,7 +18,7 @@ router.get('/get', async (req, res) => {
   const data = {
     user_id: result.user_id, user_code: result.user_code, user_name: result.user_name,
     level: result.level, gender: result.gender, age: result.age, avatar: result.avatar, dept_id: result.dept_id,
-    phone: result.phone, status: res.status, comment: result.comment
+    phone: result.phone, status: result.status, comment: result.comment
   }
   res.json({ code: 200, data: data })
 })
