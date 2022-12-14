@@ -33,8 +33,8 @@ app.use(async (req, res, next) => {
     return next();
   } else {
     const t = req.headers.authorization
-    const user_code = req.query
-    if (!(await token.verify(t, user_code))) {
+    const user_code = req.headers.user_code
+    if (!(await token.verify(t, { user_code: user_code }))) {
       res.json({ code: 200, message: 'token验证失败' })
     } else {
       return next();

@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { formatDate } = require('../../utils/dateHandle/dateHandle')
 const accountService = require('../../system/service/accountService/accountService')
+const roleService = require('../../system/service/systemService/roleService/roleService')
 const bu = require('../../utils/bcrypt/bcrypt')
 const { URL } = require('../../utils/constant/constant')
 
@@ -14,12 +15,19 @@ router.get('/all', async (req, res) => {
 router.get('/get', async (req, res) => {
   const { user_code } = req.query
   const as = new accountService()
+  const rs = new roleService()
   const result = await as.getInfoByUserCode({ user_code: user_code })
-  const data = {
+  const user = {
     user_id: result.user_id, user_code: result.user_code, user_name: result.user_name,
     level: result.level, gender: result.gender, age: result.age, avatar: result.avatar, dept_id: result.dept_id,
     phone: result.phone, status: result.status, comment: result.comment
   }
+  // 获取user_code下所有的roles
+  const roles_t = await rs.getRoleByUsercode({ user_code: user_code })
+  const roles = roles_t.map(e => {
+    return { role_id: e.role_id, name: e.name }
+  })
+  const data = Object.assign(user, { roles: roles })
   res.json({ code: 200, data: data })
 })
 
