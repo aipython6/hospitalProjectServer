@@ -11,7 +11,7 @@ const token = require('../../utils/token/token')
 // 进入登录页，生成验证码
 router.get('/getImageCode', async (req, res, next) => {
   const { text, img, code_id } = await getCaptcha()
-  return res.json({ code: 200, img: img, text: text, code_id: code_id })
+  res.json({ code: 200, img: img, text: text, code_id: code_id })
 })
 
 // 用户登录
