@@ -19,7 +19,7 @@ router.get('/get', async (req, res) => {
   const result = await as.getInfoByUserCode({ user_code: user_code })
   const user = {
     user_id: result.user_id, user_code: result.user_code, user_name: result.user_name,
-    level: result.level, gender: result.gender, age: result.age, avatar: result.avatar, dept_id: result.dept_id,
+    level: result.level, gender: result.gender, age: result.age, avatar: result.avatar, dept_name: result.dept_name,
     phone: result.phone, status: result.status, comment: result.comment
   }
   // 获取user_code下所有的roles

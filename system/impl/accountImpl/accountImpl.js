@@ -20,7 +20,7 @@ class accountImpl {
 
   // 根据user_code获取用户信息
   async getInfoByUserCode({ user_code }) {
-    const sql = `select user_id, user_code, user_name, level, gender, age, dept_id, phone, avatar, status, comment from users where user_code = '${user_code}'`
+    const sql = `select user_id, user_code, user_name, level, gender, age, (select dept_name from depts b where a.dept_id=b.dept_id) dept_name, phone, avatar, status, comment from users a where user_code = '${user_code}'`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if(!err) {

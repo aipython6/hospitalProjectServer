@@ -73,6 +73,33 @@ class roleImpl {
     })
   }
 
+  // 给用户添加角色
+  addRolesToUser(data) {
+    const sql = `insert into users_roles set ?`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, data, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  // 删除用户的一个角色
+  deleteRolesToUser({role_id, user_code}) {
+    const sql = `delete from users_roles where role_id=${role_id} and user_code=${user_code}`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 
 module.exports = roleImpl

@@ -19,5 +19,11 @@ class roleService {
   delete(data) {
     return this.roleImpl.delete(data)
   }
+  addRolesToUser(data) {
+    return this.roleImpl.addRolesToUser(data)
+  }
+  deleteRolesToUser(data) {
+    return this.roleImpl.deleteRolesToUser(data)
+  }
 }
 module.exports = roleService

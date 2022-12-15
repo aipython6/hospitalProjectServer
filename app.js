@@ -10,6 +10,8 @@ const token = require('./utils/token/token')
 
 const loginRouter = require('./routes/login/login');
 const accountRouter = require('./routes/account/account');
+const menuRouter = require('./routes/system/menus/menus');
+const roleRouter = require('./routes/system/roles/roles');
 
 const app = express();
 
@@ -45,6 +47,9 @@ app.use(async (req, res, next) => {
 
 app.use('/api/login', loginRouter);
 app.use('/api/account', accountRouter);
+app.use('/api/menu', menuRouter);
+app.use('/api/role', roleRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
