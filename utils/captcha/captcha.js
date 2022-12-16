@@ -17,10 +17,10 @@ const getCaptcha = async () => {
   // 生成验证码的同时，保存验证码到数据库
   const ls = new loginService()
   const result = await ls.saveImageCode({ code_num: captcha.text, create_time: formatDate(new Date()) })
-  if (result.affectedRows) {
+  if (result.affectedRows > 0) {
     return { text: captcha.text, img: captcha.data, code_id: result.insertId }
   } else {
-    return { text: '', code_id: '' }
+    console.error('获取验证码出错')
   }
 }
 

@@ -14,7 +14,7 @@ class Cors {
 }
 
 const cors_instance = new Cors({
-  origin: ['http://localhost:5173/'],
+  origin: ['http://localhost:5173'],
   optionsSuccessStatus: 200,
   allowedHeaders: ['Content-Type', 'authorization', 'user_code']
 });
