@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(async (req, res, next) => {
   const url = req.url;
+  // console.log(url)
   // 不需要token验证的请求
   const whiteList = ['/api/login/userLogin', '/api/login/getImageCode']
   if (whiteList.includes(url)) {

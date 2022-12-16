@@ -17,22 +17,22 @@ router.get('/getImageCode', async (req, res, next) => {
 // 用户登录
 router.post('/userLogin', async (req, res, next) => {
   // user_code是唯一的,相当于职工号
-  const { user_code, img_code, password, id, rememberme, expire } = req.body
+  const { user_code, verifyCode, password, captchaId, rememberme, expire } = req.body
   const ls = new loginService()
   const ts = new tokenService()
 
-  const { code } = await ls.getImageCodeById({ id: parseInt(id) })
+  const { code } = await ls.getImageCodeById({ id: parseInt(captchaId) })
   const { hash_password } = await ls.getPasswordByUserid({ user_code: user_code })
   if (!code) {
     res.json({ code: 200, message: '验证码已过期' })
   } else {
-    if (code.toLowerCase() === img_code.toLowerCase()) {
+    if (code.toLowerCase() === verifyCode.toLowerCase()) {
       if (hash_password) {
         if (await bu.passDecoder(hash_password, password)) {
           const t = token.sign(user_code, parseInt(rememberme), parseInt(expire))
           // 保存token
           await ts.add({ token: t, login_time: formatDate(new Date()), user_code: user_code, status: 1 })
-          res.json({ code: 200, message: '登录成功', token: t })
+          res.json({ code: 200, message: '登录成功', data: {token: t, user_code: user_code} })
         } else {
           res.json({ code: 200, message: '密码错误' })
         }

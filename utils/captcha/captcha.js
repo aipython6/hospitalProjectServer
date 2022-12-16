@@ -8,7 +8,7 @@ const getCaptcha = async () => {
     size: 4,
     ignoreChars: '0Oo1liI',
     noise: 2,
-    background: '#f0f0f4',
+    background: '#E1EDF2',
     width: 110,
     height: 38,
     fontSize: 38
@@ -18,7 +18,8 @@ const getCaptcha = async () => {
   const ls = new loginService()
   const result = await ls.saveImageCode({ code_num: captcha.text, create_time: formatDate(new Date()) })
   if (result.affectedRows > 0) {
-    return { text: captcha.text, img: captcha.data, code_id: result.insertId }
+    const img = `data:image/svg+xml;base64,${Buffer.from(captcha.data).toString('base64')}`
+    return { text: captcha.text, img: img, code_id: result.insertId }
   } else {
     console.error('获取验证码出错')
   }
