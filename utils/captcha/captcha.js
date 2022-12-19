@@ -8,7 +8,7 @@ const getCaptcha = async () => {
     size: 4,
     ignoreChars: '0Oo1liI',
     noise: 2,
-    background: '#E1EDF2',
+    background: '#FACCFF',
     width: 110,
     height: 38,
     fontSize: 38

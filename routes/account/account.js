@@ -12,8 +12,8 @@ router.get('/all', async (req, res) => {
 })
 
 // 根据user_code获取用户信息
-router.get('/get', async (req, res) => {
-  const { user_code } = req.query
+router.get('/info', async (req, res) => {
+  const user_code = req.headers.user_code
   const as = new accountService()
   const rs = new roleService()
   const result = await as.getInfoByUserCode({ user_code: user_code })
