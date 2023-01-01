@@ -5,6 +5,10 @@ class accountService {
     this.accountImpl = new accountImpl()
   }
 
+  permmenu() {
+    return this.accountImpl.permmenu()
+  }
+
   getUsers() {
     return this.accountImpl.getUsers()
   }

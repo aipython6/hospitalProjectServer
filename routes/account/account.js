@@ -11,6 +11,23 @@ router.get('/all', async (req, res) => {
 
 })
 
+router.get('/permmenu', async (req, res) => {
+  const as = new accountService()
+  const result = await as.permmenu()
+  const menus = result.map(r => {
+    return {
+      createTime: r.create_at, updateTime: r.update_at,
+      id: r.id, parentId: r.parent_id, name: r.name,
+      router: r.router, perms: r.perms, type: r.type,
+      icon: r.icon,orderNum: r.order_num,viewPath: r.view_path,
+      keepalive: r.keepalive, isShow: r.is_show
+    }
+  })
+  const perms = result.map(r => r.perms).filter(r => r!==null)
+  res.json({ code: 200, menus: menus, perms: perms })
+})
+
+
 // 根据user_code获取用户信息
 router.get('/info', async (req, res) => {
   const user_code = req.headers.user_code
@@ -18,9 +35,12 @@ router.get('/info', async (req, res) => {
   const rs = new roleService()
   const result = await as.getInfoByUserCode({ user_code: user_code })
   const user = {
-    user_id: result.user_id, user_code: result.user_code, user_name: result.user_name,
-    level: result.level, gender: result.gender, age: result.age, avatar: result.avatar, dept_name: result.dept_name,
-    phone: result.phone, status: result.status, comment: result.comment
+    createTime: result.create_time,updateTime: result.update_time,
+    id: result.user_id, departmentId: result.dept_id,
+    departmentName: result.dept_name,
+    user_code: result.user_code, username: result.user_name,
+    headImg: result.avatar, level: result.level, gender: result.gender,
+    age: result.age, phone: result.phone, remark: result.comment,status: result.status,
   }
   // 获取user_code下所有的roles
   const roles_t = await rs.getRoleByUsercode({ user_code: user_code })
@@ -28,7 +48,7 @@ router.get('/info', async (req, res) => {
     return { role_id: e.role_id, name: e.name }
   })
   const data = Object.assign(user, { roles: roles })
-  res.json({ code: 200, data: data })
+  res.json({ code: 200, userInfo: data })
 })
 
 // 添加用户

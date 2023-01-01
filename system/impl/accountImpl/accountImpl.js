@@ -4,6 +4,19 @@ const mysqlConnect = require('../../../config/database/mysql/mysqlConfig')
 class accountImpl {
   constructor() { }
 
+  permmenu() {
+    const sql = `select * from sys_menu`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if(!err) {
+          resolve(result)
+        } else {
+          reject(err)          
+        }
+      })
+    })
+  }
+
   // 获取所有用户
   async getUsers() {
     const sql = `select * from users`
