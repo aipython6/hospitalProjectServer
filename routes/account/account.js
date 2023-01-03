@@ -19,11 +19,11 @@ router.get('/permmenu', async (req, res) => {
       createTime: r.create_at, updateTime: r.update_at,
       id: r.id, parentId: r.parent_id, name: r.name,
       router: r.router, perms: r.perms, type: r.type,
-      icon: r.icon,orderNum: r.order_num,viewPath: r.view_path,
+      icon: r.icon, orderNum: r.order_num, viewPath: r.view_path,
       keepalive: r.keepalive, isShow: r.is_show
     }
   })
-  const perms = result.map(r => r.perms).filter(r => r!==null)
+  const perms = result.map(r => r.perms).filter(r => r !== null)
   res.json({ code: 200, menus: menus, perms: perms })
 })
 
@@ -35,12 +35,12 @@ router.get('/info', async (req, res) => {
   const rs = new roleService()
   const result = await as.getInfoByUserCode({ user_code: user_code })
   const user = {
-    createTime: result.create_time,updateTime: result.update_time,
+    createTime: result.create_time, updateTime: result.update_time,
     id: result.user_id, departmentId: result.dept_id,
     departmentName: result.dept_name,
-    user_code: result.user_code, username: result.user_name,
+    userCode: result.user_code, username: result.user_name,
     headImg: result.avatar, level: result.level, gender: result.gender,
-    age: result.age, phone: result.phone, remark: result.comment,status: result.status,
+    age: result.age, phone: result.phone, remark: result.comment, status: result.status,
   }
   // 获取user_code下所有的roles
   const roles_t = await rs.getRoleByUsercode({ user_code: user_code })
@@ -49,6 +49,11 @@ router.get('/info', async (req, res) => {
   })
   const data = Object.assign(user, { roles: roles })
   res.json({ code: 200, userInfo: data })
+})
+
+// 退出
+router.post('/logout', async (req, res) => {
+  res.json({ code: 200, message: '退出成功', data: {} })
 })
 
 // 添加用户
